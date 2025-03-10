@@ -8,14 +8,15 @@ from get_yuan_rate import get_yuan_rate
 
 # Загружаем переменные из .env
 load_dotenv()
-TOKEN = os.getenv("BOT_TOKEN") 
-CHANNEL_ID = os.getenv("CHANNEL_ID")  
+TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")  # Изменили CHANNEL_ID на CHAT_ID
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
 
 # Инициализация бота
 bot = Bot(token=TOKEN)
+
 
 async def send_yuan_rate():
     try:
@@ -26,7 +27,7 @@ async def send_yuan_rate():
 
         # Дата в формате ДД.ММ.ГГГГ
         today_date = datetime.now().strftime("%d.%m.%Y")
-        
+
         # Рассчитываем курсы с надбавками
         rate_200 = rate + 0.8
         rate_2000 = rate + 0.7
@@ -40,15 +41,16 @@ async def send_yuan_rate():
             f"От 6000¥ - {rate_6000:.2f}₽"
         )
 
-        logging.info(f"Отправка сообщения: {message} в {CHANNEL_ID}")
-        await bot.send_message(CHANNEL_ID, message)
+        logging.info(f"Отправка сообщения: {message} в {CHAT_ID}")
+        await bot.send_message(CHAT_ID, message)  # Изменили CHANNEL_ID на CHAT_ID
         logging.info("Сообщение успешно отправлено!")
-    
+
     except Exception as e:
         logging.error(f"Ошибка при отправке сообщения: {e}")
-    
+
     finally:
         await bot.session.close()
+
 
 if __name__ == "__main__":
     asyncio.run(send_yuan_rate())
