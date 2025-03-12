@@ -6,14 +6,15 @@ on:
   workflow_dispatch: 
 
 jobs:
-  bot-job:
+  run-bot:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
@@ -24,7 +25,6 @@ jobs:
 
       - name: Run bot
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}  # Используем GitHub Secrets
-          CHANNEL_ID: ${{ secrets.CHAT_ID }}  # Используем GitHub Secrets
-        run: |
-          python bot.py
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}  # Передаем секрет BOT_TOKEN
+          CHAT_ID: ${{ secrets.CHAT_ID }}      # Передаем секрет CHAT_ID
+        run: python bot.py
